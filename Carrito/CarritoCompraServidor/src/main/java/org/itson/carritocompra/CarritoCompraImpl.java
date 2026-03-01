@@ -28,8 +28,8 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
     public CarritoCompraImpl() {
         inventario();
     }
-    
-    public void inventario(){
+
+    public void inventario() {
         Producto p1 = Producto.newBuilder().setId("1").setNombre("Laptop").setPrecio(15000).build();
         Producto p2 = Producto.newBuilder().setId("2").setNombre("Mouse").setPrecio(250).build();
         Producto p3 = Producto.newBuilder().setId("3").setNombre("Teclado").setPrecio(500).build();
@@ -106,10 +106,10 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
         double subtotal = 0;
         for (Producto p : request.getItemsList()) {
             int stockActual = inventario.get(p.getId());
-            inventario.put(p.getId(), stockActual - p.getCantidad()); // Descuento
+            inventario.put(p.getId(), stockActual - p.getCantidad()); 
             subtotal += p.getPrecio() * p.getCantidad();
         };
-        
+
         double impuestos = subtotal * 0.16; // IVA del 16%
         double total = subtotal + impuestos;
         //Construimos la respuesta usando el Builder 
@@ -129,9 +129,19 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
     @Override
     public void obtenerCatalogo(com.google.protobuf.Empty request, StreamObserver<CatalogoResponse> responseObserver) {
         System.out.println("Obteniendo productos del catalogo");
-        CatalogoResponse response = CatalogoResponse.newBuilder().addAllProductos(catalogo).build();
+        CatalogoResponse.Builder responseBuilder = CatalogoResponse.newBuilder();
+        for (Producto producto : catalogo) {
+            int stockActual = inventario.getOrDefault(producto.getId(), 0);
+            Producto p = Producto.newBuilder()
+                    .setId(producto.getId())
+                    .setNombre(producto.getNombre())
+                    .setPrecio(producto.getPrecio())
+                    .setCantidad(stockActual)
+                    .build();
+            responseBuilder.addProductos(p);
+        }
 
-        responseObserver.onNext(response);
+        responseObserver.onNext(responseBuilder.build());
         responseObserver.onCompleted();
     }
 
