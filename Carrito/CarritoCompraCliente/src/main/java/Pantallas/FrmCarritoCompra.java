@@ -64,24 +64,41 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
     private void agregarListenerTabla() {
         CatalogoResponse Response = obtenerCatalogo();
 
-        // Para saber qué fila se seleccionó
         jTable1.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
-
-            // Verifica que el evento se da en una sola vez por clic
             if (!e.getValueIsAdjusting()) {
-                
                 int fila = jTable1.getSelectedRow();
-
-                if (fila != -1) { //no hay nada seleccionado
+                if (fila != -1) {
                     String nombreProducto = jTable1.getValueAt(fila, 0).toString();
-                    agregarPanelProductos(nombreProducto);
-                    
-                    for (Producto p : Response.getProductosList()) {
-                        if (nombreProducto.equals(p.getNombre())) {
-                            productosSeleccionados.add(p);
-                            break;
+                    int stockDisponible = (int) jTable1.getValueAt(fila, 1);
+
+                    // para que se pueda modificar la contidad
+                    String input = JOptionPane.showInputDialog(this,
+                            "¿Cuántas unidades de " + nombreProducto + " desea?", "1");
+
+                    try {
+                        int cantidadPedida = Integer.parseInt(input);
+
+                        if (cantidadPedida > 0 && cantidadPedida <= stockDisponible) {
+                            // Buscar el producto en el catálogo para obtener lod datos
+                            for (Producto p : Response.getProductosList()) {
+                                if (nombreProducto.equals(p.getNombre())) {
+                                    // copia del producto con la cantidad seleccionada
+                                    Producto pConCantidad = Producto.newBuilder(p)
+                                            .setCantidad(cantidadPedida)
+                                            .build();
+
+                                    productosSeleccionados.add(pConCantidad);
+                                    agregarPanelProductos(nombreProducto + " (x" + cantidadPedida + ")");
+                                    break;
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Cantidad no válida o stock insuficiente");
                         }
+                    } catch (NumberFormatException ex) {
+                        // Si el usuario cancela o mete texto, no hacemos nada
                     }
+                    jTable1.clearSelection(); // limpiar para permitir volver a seleccionar el mismo
                 }
             }
         });
@@ -132,25 +149,25 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         Map<String, Integer> cantidades = new HashMap<>();
         Map<String, Producto> infoProductos = new HashMap<>();
 
-        //Se itera entre todos los productos seleccionados
+        // Se itera entre todos los productos seleccionados
         for (Producto p : productosSeleccionados) {
-            //Se saca el numero de veces que se repite un producto y lo agrega al hash de cantidades
-            cantidades.put(p.getId(), cantidades.getOrDefault(p.getId(), 0) + 1);
-            //Se agrega el objeto producto
+            cantidades.put(p.getId(), cantidades.getOrDefault(p.getId(), 0) + p.getCantidad());
+
+            // Se agrega el objeto producto
             infoProductos.putIfAbsent(p.getId(), p);
         }
 
-        //Se crea el builder para el request
+        //builder para el request 
         CarritoRequest.Builder requestBuilder = CarritoRequest.newBuilder().setUsuarioId(idUsuario);
 
-        //Se itera en el hash de todas las cantidades para sacar el id de los productos
+        // Se itera en el hash de todas las cantidades para sacar el id de los productos
         for (String id : cantidades.keySet()) {
 
-            //Obtiene el producto junto con su cantidad
+            // Obtiene el producto junto con su cantidad
             Producto original = infoProductos.get(id);
             int cantidadFinal = cantidades.get(id);
 
-            //Se crea el producto
+            // Se crea el producto final con la cantidad acumulada
             Producto itemFinal = Producto.newBuilder()
                     .setId(id)
                     .setNombre(original.getNombre())
@@ -158,10 +175,11 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
                     .setCantidad(cantidadFinal)
                     .build();
 
-            //Se agrega el producto al request
+            // Se agrega el producto al request
             requestBuilder.addItems(itemFinal);
         }
         return requestBuilder;
+
     }
 
     /**

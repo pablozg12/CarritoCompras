@@ -106,7 +106,7 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
         double subtotal = 0;
         for (Producto p : request.getItemsList()) {
             int stockActual = inventario.get(p.getId());
-            inventario.put(p.getId(), stockActual - p.getCantidad()); 
+            inventario.put(p.getId(), stockActual - p.getCantidad());
             subtotal += p.getPrecio() * p.getCantidad();
         };
 
@@ -114,8 +114,12 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
         double total = subtotal + impuestos;
         //Construimos la respuesta usando el Builder 
         //generado por Protobuf 
+        
+        // para que el id de la compra se vea mas bonito :)
+        String id = "FAC-" + System.currentTimeMillis() % 100000 + "-" + (int) (Math.random() * 900 + 100);
+
         CarritoResponse response = CarritoResponse.newBuilder()
-                .setTransaccionId(UUID.randomUUID().toString())
+                .setTransaccionId(id) 
                 .setTotalNeto(subtotal)
                 .setImpuestos(impuestos)
                 .setTotalPagar(total)

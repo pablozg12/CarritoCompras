@@ -30,6 +30,7 @@ Pantallas\FrmCarritoCompra$3.class
 com\tienda\grpc\CarritoServiceGrpc$3.class
 com\tienda\grpc\ProductoOrBuilder.class
 com\tienda\grpc\CarritoResponse$Builder.class
+org\itson\carritocompracliente\Main\CarritoCompraCliente.class
 com\tienda\grpc\CatalogoResponseOrBuilder.class
 com\tienda\grpc\Producto$1.class
 Pantallas\FrmCarritoCompra$1.class
