@@ -26,10 +26,10 @@ com\tienda\grpc\CarritoServiceGrpc$CarritoServiceStub.class
 com\tienda\grpc\CarritoRequest.class
 com\tienda\grpc\CarritoServiceGrpc$CarritoServiceImplBase.class
 com\tienda\grpc\Producto$Builder.class
-Pantallas\FrmCarritoCompra$3.class
 com\tienda\grpc\CarritoServiceGrpc$3.class
 com\tienda\grpc\ProductoOrBuilder.class
 com\tienda\grpc\CarritoResponse$Builder.class
+org\itson\carritocompracliente\Main\Cliente2.class
 org\itson\carritocompracliente\Main\CarritoCompraCliente.class
 com\tienda\grpc\CatalogoResponseOrBuilder.class
 com\tienda\grpc\Producto$1.class

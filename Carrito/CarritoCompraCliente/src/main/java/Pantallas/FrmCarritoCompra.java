@@ -71,7 +71,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
                 int fila = jTable1.getSelectedRow();
                 if (fila != -1) {
                     String nombreProducto = jTable1.getValueAt(fila, 0).toString();
-                    int stockDisponible = (int) jTable1.getValueAt(fila, 1);
+//                    int stockDisponible = (int) jTable1.getValueAt(fila, 1);
 
                     // para que se pueda modificar la contidad
                     String input = JOptionPane.showInputDialog(this,
@@ -80,7 +80,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
                     try {
                         int cantidadPedida = Integer.parseInt(input);
 
-                        if (cantidadPedida > 0 && cantidadPedida <= stockDisponible) {
+                        if (cantidadPedida > 0) {
                             // Buscar el producto en el catálogo para obtener lod datos
                             for (Producto p : Response.getProductosList()) {
                                 if (nombreProducto.equals(p.getNombre())) {
@@ -130,7 +130,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         CatalogoResponse Response = obtenerCatalogo();
 
         //Para que la tabla no pueda ser editada manualmente
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Producto", "Stock"}, 0) {
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"Producto"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -141,7 +141,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         model.setRowCount(0);
 
         for (Producto p : Response.getProductosList()) {
-            Object[] nuevaFila = {p.getNombre(), p.getCantidad()};
+            Object[] nuevaFila = {p.getNombre()};
             model.addRow(nuevaFila);
         }
     }
@@ -197,7 +197,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         lbCatalogo = new javax.swing.JLabel();
         spProductos = new javax.swing.JScrollPane();
         btnComprar = new javax.swing.JButton();
-        spTablaProductos = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -221,26 +221,18 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
             }
         });
 
-        spTablaProductos.setBorder(null);
-        spTablaProductos.setForeground(new java.awt.Color(0, 51, 102));
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null},
+                {null},
+                {null},
+                {null}
             },
             new String [] {
-                "Nombre de producto", "Stock"
+                "Productos"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        spTablaProductos.setViewportView(jTable1);
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -251,32 +243,32 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
                 .addComponent(lbCatalogo)
                 .addGap(104, 104, 104)
                 .addComponent(lbTitulo)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(spTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addComponent(spProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(279, 279, 279)
+                .addGap(0, 164, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(253, 253, 253))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(spProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbCatalogo, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbTitulo, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(spTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(spProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(spProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+                .addGap(23, 23, 23)
                 .addComponent(btnComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addGap(22, 22, 22))
         );
 
         pack();
@@ -304,10 +296,10 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnComprar;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbCatalogo;
     private javax.swing.JLabel lbTitulo;
     private javax.swing.JScrollPane spProductos;
-    private javax.swing.JScrollPane spTablaProductos;
     // End of variables declaration//GEN-END:variables
 }
