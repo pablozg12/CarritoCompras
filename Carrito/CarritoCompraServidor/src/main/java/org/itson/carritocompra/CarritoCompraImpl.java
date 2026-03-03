@@ -13,8 +13,9 @@ import com.tienda.grpc.CatalogoResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.SwingUtilities;
+import pantallas.FrmInventario;
 
 /**
  *
@@ -24,9 +25,15 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
 
     private final Map<String, Integer> inventario = new ConcurrentHashMap<>();
     public List<Producto> catalogo = new ArrayList<>();
+    private FrmInventario ventanaInventario;
 
     public CarritoCompraImpl() {
         inventario();
+        SwingUtilities.invokeLater(() -> {
+            ventanaInventario = new FrmInventario();
+            ventanaInventario.setVisible(true);
+            ventanaInventario.actualizarInventario(inventario, catalogo);
+        });
     }
 
     public void inventario() {
@@ -109,17 +116,17 @@ public class CarritoCompraImpl extends CarritoServiceImplBase {
             inventario.put(p.getId(), stockActual - p.getCantidad());
             subtotal += p.getPrecio() * p.getCantidad();
         };
-
+        ventanaInventario.actualizarInventario(inventario, catalogo);
         double impuestos = subtotal * 0.16; // IVA del 16%
         double total = subtotal + impuestos;
         //Construimos la respuesta usando el Builder 
         //generado por Protobuf 
-        
+
         // para que el id de la compra se vea mas bonito :)
         String id = "FAC-" + System.currentTimeMillis() % 100000 + "-" + (int) (Math.random() * 900 + 100);
 
         CarritoResponse response = CarritoResponse.newBuilder()
-                .setTransaccionId(id) 
+                .setTransaccionId(id)
                 .setTotalNeto(subtotal)
                 .setImpuestos(impuestos)
                 .setTotalPagar(total)

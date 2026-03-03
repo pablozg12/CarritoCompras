@@ -10,6 +10,7 @@ com\tienda\grpc\CarritoServiceGrpc$CarritoServiceBaseDescriptorSupplier.class
 com\tienda\grpc\CarritoResponse.class
 com\tienda\grpc\CarritoResponse$1.class
 com\tienda\grpc\CatalogoResponse$Builder.class
+pantallas\FrmInventario.class
 com\tienda\grpc\CarritoServiceGrpc$CarritoServiceBlockingStub.class
 com\tienda\grpc\Carrito.class
 com\tienda\grpc\CarritoResponseOrBuilder.class

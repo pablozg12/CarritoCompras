@@ -11,6 +11,7 @@ import com.tienda.grpc.CatalogoResponse;
 import com.tienda.grpc.Producto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +60,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         agregarListenerTabla();
 
         this.idUsuario = idUsuario;
+        setLocationRelativeTo(null);
     }
 
     private void agregarListenerTabla() {
@@ -199,18 +201,28 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 102, 102));
 
-        lbTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lbTitulo.setFont(new java.awt.Font("HP Simplified", 1, 36)); // NOI18N
+        lbTitulo.setForeground(new java.awt.Color(0, 51, 102));
         lbTitulo.setText("Carrito de compras");
 
         lbCatalogo.setText("Catálogo");
 
+        spProductos.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnComprar.setBackground(new java.awt.Color(0, 51, 102));
+        btnComprar.setFont(new java.awt.Font("HP Simplified", 1, 14)); // NOI18N
+        btnComprar.setForeground(new java.awt.Color(255, 255, 255));
         btnComprar.setText("Comprar");
         btnComprar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComprarActionPerformed(evt);
             }
         });
+
+        spTablaProductos.setBorder(null);
+        spTablaProductos.setForeground(new java.awt.Color(0, 51, 102));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -237,7 +249,7 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(lbCatalogo)
-                .addGap(52, 52, 52)
+                .addGap(104, 104, 104)
                 .addComponent(lbTitulo)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -254,14 +266,11 @@ public class FrmCarritoCompra extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lbTitulo)
-                        .addGap(24, 24, 24))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lbCatalogo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addComponent(lbCatalogo, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbTitulo, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(spTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(spProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
